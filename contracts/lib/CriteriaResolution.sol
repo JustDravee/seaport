@@ -83,6 +83,7 @@ contract CriteriaResolution is CriteriaResolutionErrors {
 
                 // If the criteria resolver refers to an offer item...
                 if (criteriaResolver.side == Side.OFFER) {
+                    // Update the offer item.
                     _updateCriteriaItem(
                         orderParameters.offer,
                         componentIndex,
@@ -95,11 +96,13 @@ contract CriteriaResolution is CriteriaResolutionErrors {
                         orderParameters.consideration
                     );
 
+                    // Cast consideration to offer item array.
                     OfferItem[] memory castedConsideration;
                     assembly {
                         castedConsideration := consideration
                     }
 
+                    // Update the consideration item.
                     _updateCriteriaItem(
                         castedConsideration,
                         componentIndex,
@@ -159,6 +162,14 @@ contract CriteriaResolution is CriteriaResolutionErrors {
         }
     }
 
+    /**
+     * @dev Internal pure function to update a criteria item.
+     *
+     * @param offer             The offer in question.
+     * @param componentIndex    The index of the item to update.
+     * @param criteriaResolver  The criteria resolver to use to update the item.
+     * @param errorHandler      A function to call if an error occurs.
+     */
     function _updateCriteriaItem(
         OfferItem[] memory offer,
         uint256 componentIndex,
